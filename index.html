@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saiful Alam Rafi - Personal Portfolio</title>
+    <title>SAR PORTFOLIO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
@@ -39,6 +39,7 @@
               'shimmer': 'shimmer 4s linear infinite',
               'orbit': 'orbit 20s linear infinite',
               'center-pulse': 'centerPulse 3s ease-in-out infinite',
+              'fill-progress': 'fillProgress 1s ease-out forwards',
             },
             keyframes: {
               fadeIn: {
@@ -98,6 +99,10 @@
                 '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 10px rgba(224, 224, 224, 0.2)' },
                 '50%': { transform: 'scale(1.05)', boxShadow: '0 0 20px rgba(224, 224, 224, 0.4)' }
               },
+              fillProgress: {
+                'from': { transform: 'scaleY(0)' },
+                'to': { transform: 'scaleY(1)' },
+              }
             },
           },
         },
@@ -229,6 +234,13 @@
   }
   .spotlight-card:hover::before {
     opacity: 1;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 </style>
 </head>

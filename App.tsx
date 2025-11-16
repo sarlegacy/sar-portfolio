@@ -7,7 +7,7 @@ const Logo = () => (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.56 12L12 0L1.44 12L0 10.56L12 21.12L24 10.56L22.56 12Z" />
       </svg>
-      <span className="font-semibold text-lg">SAIFUL ALAM RAFI</span>
+      <span className="font-semibold text-lg">SAR PORTFOLIO</span>
     </div>
 )
 
@@ -76,7 +76,7 @@ export default function App() {
     window.addEventListener('resize', resizeCanvas);
 
     const particles: {x: number; y: number; vx: number; vy: number}[] = [];
-    const particleCount = 40; // Reduced for a subtler effect
+    const particleCount = window.innerWidth < 768 ? 25 : 40;
     for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * canvas.width,
@@ -145,8 +145,11 @@ export default function App() {
               <PortfolioApp theme={theme} onThemeChange={handleThemeChange} />
             </div>
         </main>
-        <footer className="mt-12 flex-shrink-0">
+        <footer className="mt-12 flex-shrink-0 flex flex-col items-center gap-2">
           <Logo />
+          <p className="text-xs text-gray-500 dark:text-mono-light transition-colors duration-500">
+            ALL RIGHTS RESERVED@2025. BUILD & DEVELOPED BY SAIFUL ALAM RAFI
+          </p>
         </footer>
     </div>
   );

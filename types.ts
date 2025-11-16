@@ -33,8 +33,8 @@ export interface ProfileData {
   bio: string;
   longBio?: string;
   socials: {
-    twitter: string;
-    github: string;
+    facebook: string;
+    instagram: string;
     linkedin: string;
   }
 }

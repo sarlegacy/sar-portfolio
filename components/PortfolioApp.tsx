@@ -8,6 +8,7 @@ import AboutMeModal from './AboutMeModal';
 import Sidebar from './Sidebar';
 import NavLink from './NavLink';
 import { Theme } from '../App';
+import { useMultiIntersectionObserver } from './hooks/useIntersectionObserver';
 
 export type View = 'home' | 'projects' | 'experience' | 'contact';
 
@@ -26,34 +27,16 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
   const toggleTheme = () => {
     onThemeChange(theme === 'dark' ? 'light' : 'dark');
   };
+  
+  const intersectionOptions = { root: mainContentRef.current, threshold: 0.5 };
+  // FIX: Replaced `useIntersectionObserver` with `useMultiIntersectionObserver` to correctly handle observing multiple sections within the main content area. The hook was being called with three arguments, which matches the signature for `useMultiIntersectionObserver`.
+  useMultiIntersectionObserver((entry) => {
+    if (entry.isIntersecting) {
+      setVisibleSection(entry.target.id as View);
+      entry.target.classList.add('is-visible');
+    }
+  }, intersectionOptions, mainContentRef);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSection(entry.target.id as View);
-            if (!entry.target.classList.contains('is-visible')) {
-              entry.target.classList.add('is-visible');
-            }
-          }
-        });
-      },
-      {
-        root: mainContentRef.current,
-        threshold: 0.5, 
-      }
-    );
-     const currentRef = mainContentRef.current;
-    if (!currentRef) return;
-
-    const sections = currentRef.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,9 +66,9 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
     <>
       <div className="bg-white/60 dark:bg-mono-dark/60 backdrop-blur-xl p-0.5 rounded-2xl w-full shadow-2xl shadow-black/50 transition-colors duration-500">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-400 to-gray-600 dark:from-mono-white dark:to-mono-light rounded-2xl animate-border-glow blur opacity-20"></div>
-        <div className="relative bg-gray-50/80 dark:bg-mono-dark/80 rounded-2xl transition-colors duration-500">
+        <div className="relative bg-gray-50/80 dark:bg-mono-dark/80 rounded-2xl transition-colors duration-500 overflow-hidden">
           <header className="relative flex items-center justify-between p-4 border-b border-gray-200 dark:border-mono-mid/30 transition-colors duration-500">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-500">Portfolio</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-500">SAR Portfolio</h3>
              <div className="flex items-center gap-2">
                 <nav className="hidden md:flex items-center gap-2">
                   <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
@@ -106,14 +89,14 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
             </div>
           </header>
 
-          {isMobileMenuOpen && (
-            <nav className="relative md:hidden flex flex-col items-center gap-4 p-4 border-b border-gray-200 dark:border-mono-mid/30 transition-colors duration-500">
+          <div className={`absolute top-[65px] left-0 right-0 z-20 bg-gray-50/90 dark:bg-mono-dark/90 backdrop-blur-sm md:hidden transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'transform translate-y-0' : 'transform -translate-y-full'}`}>
+            <nav className="flex flex-col items-center gap-4 p-4 border-b border-gray-200 dark:border-mono-mid/30">
               <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
               <NavLink viewName="projects" activeView={visibleSection} onClick={handleNavClick}>Projects</NavLink>
               <NavLink viewName="experience" activeView={visibleSection} onClick={handleNavClick}>Experience</NavLink>
               <NavLink viewName="contact" activeView={visibleSection} onClick={handleNavClick}>Contact</NavLink>
             </nav>
-          )}
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-4">
             <div className="lg:col-span-1">
@@ -128,15 +111,13 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
               <ExperiencePage />
               <ContactPage />
 
-               {showBackToTop && (
                 <button
                     onClick={handleBackToTop}
-                    className="absolute bottom-4 right-4 z-20 bg-gray-300/70 dark:bg-mono-mid/70 backdrop-blur-sm p-3 rounded-full text-gray-800 dark:text-mono-white hover:bg-gray-800 hover:text-white dark:hover:bg-mono-white dark:hover:text-mono-black transition-all duration-300 animate-fade-in"
+                    className={`absolute bottom-4 right-4 z-20 bg-gray-300/70 dark:bg-mono-mid/70 backdrop-blur-sm p-3 rounded-full text-gray-800 dark:text-mono-white hover:bg-gray-800 hover:text-white dark:hover:bg-mono-white dark:hover:text-mono-black transition-all duration-300 ${showBackToTop ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                     aria-label="Back to top"
                 >
                     <ArrowUpIcon className="w-5 h-5" />
                 </button>
-              )}
             </main>
           </div>
         </div>

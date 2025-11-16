@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import SkillOrbit from '../SkillOrbit';
+import SkillCarousel from '../SkillCarousel';
 import { skillsData, profileData, servicesData } from '../../constants';
 import StaggeredList from '../StaggeredList';
 import TiltCard from '../TiltCard';
@@ -67,9 +67,7 @@ const HomePage = () => {
                     <TiltCard>
                         <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">My Skills</h3>
-                            <div className="w-full h-[400px] sm:h-[550px]">
-                                <SkillOrbit data={skillsData} />
-                            </div>
+                            <SkillCarousel data={skillsData} />
                         </div>
                     </TiltCard>
                 </StaggeredList>

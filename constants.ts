@@ -12,8 +12,8 @@ I excel at identifying market needs and translating them into tangible, high-imp
 
 I am a strategic thinker and a hands-on leader, committed to continuous learning and pushing the boundaries of what's possible. Let's connect and build something amazing together.`,
   socials: {
-    twitter: 'https://twitter.com',
-    github: 'https://github.com',
+    facebook: 'https://facebook.com',
+    instagram: 'https://instagram.com',
     linkedin: 'https://linkedin.com',
   }
 };

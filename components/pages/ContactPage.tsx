@@ -63,11 +63,16 @@ const ContactPage = () => {
                                           <span className="absolute inset-0 bg-white/20 animate-shimmer bg-[length:200%_100%]"></span>
                                           <span className="relative">{status === 'sending' ? 'Sending...' : 'Send Message'}</span>
                                       </button>
-                                      {status !== 'idle' && status !== 'sending' && (
-                                          <div className={`text-sm p-2 rounded-md animate-fade-in ${
-                                              status === 'success' ? 'text-status-green bg-status-green/10' : 'text-status-red bg-status-red/10'
-                                          }`}>{message}</div>
-                                      )}
+                                      <div 
+                                        aria-live="polite"
+                                        className="h-8"
+                                      >
+                                        {status !== 'idle' && status !== 'sending' && (
+                                            <div className={`text-sm p-2 rounded-md animate-fade-in ${
+                                                status === 'success' ? 'text-status-green bg-status-green/10' : 'text-status-red bg-status-red/10'
+                                            }`}>{message}</div>
+                                        )}
+                                      </div>
                                   </div>
                               </form>
                           </div>
@@ -77,9 +82,9 @@ const ContactPage = () => {
                     <div className="lg:col-span-2">
                         <StaggeredList>
                             <TiltCard>
-                                <a href="mailto:saiful.alam.rafi@example.com" className="block bg-white dark:bg-mono-dark p-6 rounded-2xl border border-gray-200 dark:border-mono-mid hover:border-gray-300 dark:hover:border-mono-light/30 transition-all duration-300">
+                                <a href="mailto:saiful.alam.rafi@example.com" className="group block bg-white dark:bg-mono-dark p-6 rounded-2xl border border-gray-200 dark:border-mono-mid hover:border-gray-300 dark:hover:border-mono-light/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_0_20px_rgba(224,224,224,0.1)]">
                                     <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-gray-100 dark:bg-mono-mid rounded-lg text-gray-800 dark:text-mono-white transition-colors duration-500">
+                                        <div className="p-3 bg-gray-100 dark:bg-mono-mid rounded-lg text-gray-800 dark:text-mono-white transition-all duration-500 group-hover:scale-110">
                                             <MailIcon className="w-6 h-6" />
                                         </div>
                                         <div>
@@ -90,9 +95,9 @@ const ContactPage = () => {
                                 </a>
                             </TiltCard>
                             <TiltCard>
-                                <a href="tel:+1234567890" className="block bg-white dark:bg-mono-dark p-6 rounded-2xl border border-gray-200 dark:border-mono-mid hover:border-gray-300 dark:hover:border-mono-light/30 transition-all duration-300">
+                                <a href="tel:+1234567890" className="group block bg-white dark:bg-mono-dark p-6 rounded-2xl border border-gray-200 dark:border-mono-mid hover:border-gray-300 dark:hover:border-mono-light/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_0_20px_rgba(224,224,224,0.1)]">
                                      <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-gray-100 dark:bg-mono-mid rounded-lg text-gray-800 dark:text-mono-white transition-colors duration-500">
+                                        <div className="p-3 bg-gray-100 dark:bg-mono-mid rounded-lg text-gray-800 dark:text-mono-white transition-all duration-500 group-hover:scale-110">
                                             <PhoneIcon className="w-6 h-6" />
                                         </div>
                                         <div>
