@@ -10,7 +10,7 @@ export const profileData: ProfileData = {
 
 I excel at identifying market needs and translating them into tangible, high-impact digital products. Whether I'm architecting a new software solution, crafting a digital marketing campaign, or managing a complex project, my goal is to drive growth and create value.
 
-I am a strategic thinker and a hands-on leader, committed to continuous learning and pushing the boundaries of what's possible. Let's connect and build something amazing together.`,
+I am a strategic thinker and a hands-on leader, committed to continuous learning and pushing the boundaries of what's possible. Born on March 4th, 1999, and hailing from Bangladesh, I bring a global perspective and a rich cultural background to my work. Let's connect and build something amazing together.`,
   socials: {
     facebook: 'https://facebook.com',
     instagram: 'https://instagram.com',

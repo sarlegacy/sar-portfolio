@@ -67,7 +67,7 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
         setImageTransform(prev => prev.replace(/scale\([^)]+\)/, 'scale(1.1)'));
     };
 
-    const linkClasses = "flex items-center gap-2 rounded-md px-2 py-1 -ml-2 text-sm text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-mono-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-800 dark:focus-visible:ring-mono-white focus-visible:ring-offset-white dark:focus-visible:ring-offset-mono-dark";
+    const linkClasses = "flex items-center gap-2 rounded-md px-2 py-1 -ml-2 text-sm text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-mono-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-green focus-visible:ring-offset-white dark:focus-visible:ring-offset-mono-dark";
 
 
     return (
@@ -75,8 +75,8 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
             ref={cardRef}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="bg-white dark:bg-mono-dark rounded-2xl border border-gray-200 dark:border-mono-mid overflow-hidden flex flex-col group transition-all duration-300 hover:border-gray-300/30 dark:hover:border-mono-light/30 hover:shadow-[0_0_30px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_0_30px_rgba(224,224,224,0.07)] hover:-translate-y-2 hover:scale-[1.03]">
-            <div className="aspect-video overflow-hidden">
+            className="bg-white dark:bg-mono-dark rounded-2xl border border-gray-200 dark:border-mono-mid overflow-hidden flex flex-col group transition-all duration-300 hover:border-gray-300/30 dark:hover:border-mono-light/30 hover:shadow-[0_0_30px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_0_30px_rgba(160,219,36,0.15)] hover:-translate-y-2 hover:scale-[1.03]">
+            <div className="aspect-[4/3] md:aspect-video overflow-hidden">
                 <img 
                     src={project.image} 
                     alt={project.title} 
@@ -85,7 +85,7 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
                 />
             </div>
             <div className="p-4 sm:p-6 flex flex-col flex-grow">
-                <h4 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">{project.title}</h4>
+                <h4 className="font-display text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">{project.title}</h4>
                 <p className="text-gray-600 dark:text-mono-light text-sm sm:text-base leading-relaxed mb-4 transition-colors duration-500">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map(tag => (

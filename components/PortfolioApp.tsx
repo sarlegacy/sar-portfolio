@@ -9,8 +9,9 @@ import Sidebar from './Sidebar';
 import NavLink from './NavLink';
 import { Theme } from '../App';
 import { useMultiIntersectionObserver } from './hooks/useIntersectionObserver';
+import TrackingPage from './pages/TrackingPage';
 
-export type View = 'home' | 'projects' | 'experience' | 'contact';
+export type View = 'home' | 'projects' | 'experience' | 'tracking' | 'contact';
 
 interface PortfolioAppProps {
     theme: Theme;
@@ -23,13 +24,51 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<any>(null); // To hold the YouTube player instance
+
+  useEffect(() => {
+    // This function will be called by the YouTube Iframe API script
+    (window as any).onYouTubeIframeAPIReady = () => {
+      playerRef.current = new (window as any).YT.Player('youtube-bg', {
+        videoId: '_Sl8diqCAFw',
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          loop: 1,
+          playlist: '_Sl8diqCAFw', // Required for loop to work
+          mute: 1,
+          playsinline: 1,
+          showinfo: 0,
+          modestbranding: 1,
+          fs: 0,
+        },
+        events: {
+          onReady: (event: any) => {
+            event.target.playVideo();
+          },
+        },
+      });
+    };
+
+    // If the API is already loaded, manually call the function
+    if (typeof (window as any).YT !== 'undefined' && typeof (window as any).YT.Player !== 'undefined') {
+        (window as any).onYouTubeIframeAPIReady();
+    }
+
+    return () => {
+        // Clean up the player instance on component unmount
+        if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+            playerRef.current.destroy();
+        }
+        (window as any).onYouTubeIframeAPIReady = undefined;
+    };
+  }, []);
 
   const toggleTheme = () => {
     onThemeChange(theme === 'dark' ? 'light' : 'dark');
   };
   
   const intersectionOptions = { root: mainContentRef.current, threshold: 0.5 };
-  // FIX: Replaced `useIntersectionObserver` with `useMultiIntersectionObserver` to correctly handle observing multiple sections within the main content area. The hook was being called with three arguments, which matches the signature for `useMultiIntersectionObserver`.
   useMultiIntersectionObserver((entry) => {
     if (entry.isIntersecting) {
       setVisibleSection(entry.target.id as View);
@@ -64,16 +103,17 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
 
   return (
     <>
-      <div className="bg-white/60 dark:bg-mono-dark/60 backdrop-blur-xl p-0.5 rounded-2xl w-full shadow-2xl shadow-black/50 transition-colors duration-500">
+      <div className="bg-white/60 dark:bg-mono-dark/80 backdrop-blur-xl p-0.5 rounded-2xl w-full shadow-2xl shadow-black/50 transition-colors duration-500">
         <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-400 to-gray-600 dark:from-mono-white dark:to-mono-light rounded-2xl animate-border-glow blur opacity-20"></div>
-        <div className="relative bg-gray-50/80 dark:bg-mono-dark/80 rounded-2xl transition-colors duration-500 overflow-hidden">
+        <div className="relative bg-gray-50/80 dark:bg-mono-dark/90 rounded-2xl transition-colors duration-500 overflow-hidden">
           <header className="relative flex items-center justify-between p-4 border-b border-gray-200 dark:border-mono-mid/30 transition-colors duration-500">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-500">SAR Portfolio</h3>
+            <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white transition-colors duration-500">SAR Portfolio</h3>
              <div className="flex items-center gap-2">
                 <nav className="hidden md:flex items-center gap-2">
                   <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
                   <NavLink viewName="projects" activeView={visibleSection} onClick={handleNavClick}>Projects</NavLink>
                   <NavLink viewName="experience" activeView={visibleSection} onClick={handleNavClick}>Experience</NavLink>
+                  <NavLink viewName="tracking" activeView={visibleSection} onClick={handleNavClick}>Live Tracking</NavLink>
                   <NavLink viewName="contact" activeView={visibleSection} onClick={handleNavClick}>Contact</NavLink>
                 </nav>
                 <button
@@ -94,6 +134,7 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
               <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
               <NavLink viewName="projects" activeView={visibleSection} onClick={handleNavClick}>Projects</NavLink>
               <NavLink viewName="experience" activeView={visibleSection} onClick={handleNavClick}>Experience</NavLink>
+               <NavLink viewName="tracking" activeView={visibleSection} onClick={handleNavClick}>Live Tracking</NavLink>
               <NavLink viewName="contact" activeView={visibleSection} onClick={handleNavClick}>Contact</NavLink>
             </nav>
           </div>
@@ -109,6 +150,7 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
               <HomePage />
               <ProjectsPage />
               <ExperiencePage />
+              <TrackingPage />
               <ContactPage />
 
                 <button

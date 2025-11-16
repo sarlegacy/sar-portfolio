@@ -36,11 +36,11 @@ const HomePage = () => {
                     <TiltCard>
                         <SpotlightCard>
                             <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
-                                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">
+                                <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">
                                     Hi, I'm {profileData.name.split(' ')[0]}.
                                     <br />
                                     <span 
-                                        className="inline-block overflow-hidden whitespace-nowrap border-r-4 border-r-gray-800 dark:border-r-mono-white pr-1 align-bottom animate-typing transition-colors duration-500"
+                                        className="inline-block overflow-hidden whitespace-nowrap border-r-4 border-r-gray-800 dark:border-r-brand-green pr-1 align-bottom animate-typing transition-colors duration-500"
                                         style={{ width: `${typingText.length}ch` }}
                                     >
                                         {typingText}
@@ -55,7 +55,7 @@ const HomePage = () => {
 
                     <TiltCard>
                         <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">What I Do</h3>
+                            <h3 className="font-display text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">What I Do</h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 {servicesData.map((service, index) => (
                                     <ServiceCard key={index} service={service} />
@@ -66,7 +66,7 @@ const HomePage = () => {
 
                     <TiltCard>
                         <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">My Skills</h3>
+                            <h3 className="font-display text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">My Skills</h3>
                             <SkillCarousel data={skillsData} />
                         </div>
                     </TiltCard>

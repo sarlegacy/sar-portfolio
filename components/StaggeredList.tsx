@@ -1,7 +1,9 @@
 import React from 'react';
 
 interface StaggeredListProps {
-    children: React.ReactNode[];
+    // FIX: Changed type from `React.ReactNode[]` to `React.ReactNode` to allow a single child.
+    // This resolves the type error in `ContactPage.tsx` where StaggeredList was used with a single child component.
+    children: React.ReactNode;
     className?: string;
 }
 

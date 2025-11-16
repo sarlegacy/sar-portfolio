@@ -3,6 +3,7 @@ import { projectsData } from '../../constants';
 import ProjectCard from '../ProjectCard';
 import StaggeredList from '../StaggeredList';
 import { SearchOffIcon } from '../icons/Icons';
+import ProjectCardSkeleton from '../ProjectCardSkeleton';
 
 const SearchIcon = () => (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -12,9 +13,17 @@ const SearchIcon = () => (
 
 
 const ProjectsPage = () => {
+    const [loading, setLoading] = useState(true);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [visibleCount, setVisibleCount] = useState(2);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1500); // Simulate fetch
+        return () => clearTimeout(timer);
+    }, []);
 
     const allTags = useMemo(() => {
         const tags = new Set<string>();
@@ -63,7 +72,7 @@ const ProjectsPage = () => {
     return (
         <section id="projects" className="h-full snap-start flex flex-col p-2 section-container">
             <div className="flex-grow flex flex-col overflow-y-auto py-4 pr-2">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-shrink-0 section-title transition-colors duration-500">Projects</h2>
+                <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-shrink-0 section-title transition-colors duration-500">Projects</h2>
                 
                 <div className="mb-6 relative flex-shrink-0">
                     <input
@@ -71,7 +80,7 @@ const ProjectsPage = () => {
                         placeholder="Search by keyword..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 text-sm font-semibold rounded-full bg-gray-100 dark:bg-mono-mid border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-mono-light/50 text-gray-900 dark:text-mono-white placeholder-gray-400 dark:placeholder-mono-light transition-all duration-300"
+                        className="w-full pl-10 pr-4 py-3 text-sm font-semibold rounded-full bg-gray-100 dark:bg-mono-mid border border-transparent focus:outline-none focus:ring-2 focus:ring-brand-green/50 dark:focus:ring-brand-green/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-mono-light transition-all duration-300 font-sans"
                         aria-label="Search projects"
                     />
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-mono-light">
@@ -86,9 +95,9 @@ const ProjectsPage = () => {
                             <button
                                 key={tag}
                                 onClick={() => handleFilterClick(tag)}
-                                className={`px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-800 dark:focus-visible:ring-mono-white focus-visible:ring-offset-white dark:focus-visible:ring-offset-mono-dark ${
+                                className={`font-sans px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-green dark:focus-visible:ring-brand-green focus-visible:ring-offset-white dark:focus-visible:ring-offset-mono-dark ${
                                     isActive
-                                    ? 'bg-gray-800 text-white dark:bg-mono-white dark:text-mono-black shadow-lg scale-105' 
+                                    ? 'bg-brand-green text-mono-black shadow-lg scale-105' 
                                     : 'bg-gray-200 text-gray-600 dark:bg-mono-mid dark:text-mono-light hover:bg-gray-300 dark:hover:bg-mono-mid/70 hover:text-gray-900 dark:hover:text-mono-white hover:shadow-md hover:scale-105 hover:-translate-y-0.5'
                                 }`}
                             >
@@ -99,7 +108,13 @@ const ProjectsPage = () => {
                 </div>
 
                 <div className="flex-grow overflow-y-auto">
-                    {filteredProjects.length > 0 ? (
+                     {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {[...Array(2)].map((_, index) => (
+                                <ProjectCardSkeleton key={index} />
+                            ))}
+                        </div>
+                    ) : filteredProjects.length > 0 ? (
                         <>
                             <StaggeredList key={`${activeFilters.join('-')}-${searchQuery}`} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projectsToShow.map(project => (

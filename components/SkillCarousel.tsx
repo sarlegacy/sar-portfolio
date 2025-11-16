@@ -20,15 +20,15 @@ const SkillCarousel: React.FC<SkillCarouselProps> = ({ data }) => {
                 {sortedData.map((skill, index) => (
                     <div 
                         key={index} 
-                        className="flex-shrink-0 w-64 bg-gray-100 dark:bg-mono-black p-5 rounded-xl border border-gray-200 dark:border-mono-mid transition-colors duration-500"
+                        className="flex-shrink-0 w-64 bg-gray-100 dark:bg-mono-dark p-5 rounded-xl border border-gray-200 dark:border-mono-mid transition-colors duration-500"
                     >
                         <div className="flex justify-between items-baseline mb-2">
-                            <h4 className="font-bold text-gray-900 dark:text-white transition-colors duration-500 truncate pr-2" title={skill.name}>{skill.name}</h4>
+                            <h4 className="font-display font-bold text-gray-900 dark:text-white transition-colors duration-500 truncate pr-2" title={skill.name}>{skill.name}</h4>
                             <span className="text-sm font-semibold text-gray-500 dark:text-mono-light transition-colors duration-500">{skill.value}%</span>
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-mono-mid rounded-full h-2 transition-colors duration-500 overflow-hidden">
                             <div 
-                                className="bg-gray-800 dark:bg-mono-white h-2 rounded-full transition-all duration-1000 ease-out" 
+                                className="bg-gradient-to-r from-brand-green to-brand-blue h-2 rounded-full transition-all duration-1000 ease-out" 
                                 style={{ width: isVisible ? `${skill.value}%` : '0%', transitionDelay: `${index * 50}ms` }}
                             ></div>
                         </div>

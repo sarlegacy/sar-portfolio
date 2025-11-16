@@ -17,7 +17,7 @@ const AboutMeModal: React.FC<AboutMeModalProps> = ({ isOpen, onClose }) => {
             onClick={onClose}
         >
             <div
-                className="bg-white/80 dark:bg-mono-dark/80 backdrop-blur-lg rounded-2xl border border-gray-200 dark:border-mono-mid w-full max-w-2xl shadow-2xl shadow-black/50 relative transition-colors duration-500"
+                className="bg-white/80 dark:bg-mono-dark/90 backdrop-blur-lg rounded-2xl border border-gray-200 dark:border-mono-mid w-full max-w-2xl shadow-2xl shadow-black/50 relative transition-colors duration-500"
                 onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside
             >
                 <button
@@ -32,8 +32,8 @@ const AboutMeModal: React.FC<AboutMeModalProps> = ({ isOpen, onClose }) => {
                     <div className="flex flex-col sm:flex-row items-center gap-6 mb-6 text-center sm:text-left">
                         <img src={profileData.avatar} alt={profileData.name} className="w-24 h-24 rounded-full border-4 border-gray-300 dark:border-mono-mid flex-shrink-0 object-cover transition-colors duration-500" />
                         <div>
-                            <h2 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-500">{profileData.name}</h2>
-                            <h3 className="text-md text-gray-800 dark:text-mono-white font-semibold transition-colors duration-500">{profileData.title}</h3>
+                            <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-500">{profileData.name}</h2>
+                            <h3 className="font-display text-md text-gray-800 dark:text-white font-semibold transition-colors duration-500">{profileData.title}</h3>
                         </div>
                     </div>
                     

@@ -43,13 +43,13 @@ const ExperiencePage = () => {
     return (
         <section ref={sectionRef} id="experience" className="h-full snap-start flex flex-col p-2 section-container">
              <div className="flex-grow flex flex-col overflow-y-auto py-4 pr-2">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 flex-shrink-0 section-title transition-colors duration-500">Work Experience</h2>
+                <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8 flex-shrink-0 section-title transition-colors duration-500">Work Experience</h2>
                 <div className="flex-grow overflow-y-auto">
                     <div className="relative pl-8">
                       {/* Timeline line */}
-                      <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-gray-200 dark:bg-mono-mid rounded-full transition-colors duration-500">
+                      <div className="absolute left-4 top-2 bottom-2 w-0.5 bg-gray-200 dark:bg-brand-grey rounded-full transition-colors duration-500">
                          {/* Progress indicator */}
-                         <div ref={progressRef} className="absolute top-0 left-0 h-full w-full bg-gradient-to-b from-gray-500 to-gray-800 dark:from-mono-light dark:to-mono-white rounded-full origin-top" style={{ transform: 'scaleY(0)' }}></div>
+                         <div ref={progressRef} className="absolute top-0 left-0 h-full w-full bg-gradient-to-b from-brand-green to-brand-blue rounded-full origin-top" style={{ transform: 'scaleY(0)' }}></div>
                       </div>
                       <StaggeredList className="space-y-12">
                           {experienceData.map((item) => (
