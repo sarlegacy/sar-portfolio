@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saiful Alam Rafi - Personal Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              'mono-black': '#0A0A0A',
+              'mono-dark': '#141414',
+              'mono-mid': '#2A2A2A',
+              'mono-light': '#A0A0A0',
+              'mono-white': '#E0E0E0',
+              'status-green': '#4ADE80',
+              'status-red': '#F87171',
+            },
+            fontFamily: {
+              sora: ['Sora', 'sans-serif'],
+            },
+            animation: {
+              'breathing': 'breathing 2s ease-in-out infinite',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'fade-out': 'fadeOut 0.5s ease-in forwards',
+              'stagger-in': 'staggerIn 0.5s ease-out forwards',
+              'rotate-glow': 'rotateGlow 4s linear infinite',
+              'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+              'typing': 'typing 3s steps(33), blink .75s step-end infinite',
+              'slide-in': 'slideIn 0.7s ease-out forwards',
+              'border-glow': 'borderGlow 5s linear infinite',
+              'shimmer': 'shimmer 4s linear infinite',
+              'orbit': 'orbit 20s linear infinite',
+              'center-pulse': 'centerPulse 3s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeOut: {
+                '0%': { opacity: '1', transform: 'translateY(0)' },
+                '100%': { opacity: '0', transform: 'translateY(-10px)' },
+              },
+               staggerIn: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              breathing: {
+                '0%, 100%': {
+                  transform: 'scale(1)',
+                  boxShadow: '0 0 4px rgba(74, 222, 128, 0.6)',
+                },
+                '50%': {
+                  transform: 'scale(1.1)',
+                  boxShadow: '0 0 8px rgba(74, 222, 128, 1)',
+                },
+              },
+              rotateGlow: {
+                '0%': { transform: 'rotate(0deg)' },
+                '100%': { transform: 'rotate(360deg)' },
+              },
+              pulseGlow: {
+                '0%, 100%': { filter: 'drop-shadow(0 0 5px rgba(224, 224, 224, 0.5))' },
+                '50%': { filter: 'drop-shadow(0 0 12px rgba(224, 224, 224, 0.9))' },
+              },
+              typing: {
+                'from': { width: '0' },
+                'to': { width: '100%' },
+              },
+              blink: {
+                '50%': { borderColor: 'transparent' },
+              },
+              slideIn: {
+                 '0%': { opacity: '0', transform: 'translateX(-50px)' },
+                '100%': { opacity: '1', transform: 'translateX(0)' },
+              },
+              borderGlow: {
+                '0%, 100%': { 'border-color': 'rgba(224, 224, 224, 0.1)' },
+                '50%': { 'border-color': 'rgba(224, 224, 224, 0.3)' },
+              },
+              shimmer: {
+                '0%': { 'background-position': '-200% 0' },
+                '100%': { 'background-position': '200% 0' },
+              },
+              orbit: {
+                'from': { transform: 'rotate(0deg)' },
+                'to': { transform: 'rotate(360deg)' }
+              },
+              centerPulse: {
+                '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 10px rgba(224, 224, 224, 0.2)' },
+                '50%': { transform: 'scale(1.05)', boxShadow: '0 0 20px rgba(224, 224, 224, 0.4)' }
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1"
+  }
+}
+</script>
+<style>
+  :root {
+    --spotlight-x: 50%;
+    --spotlight-y: 50%;
+    --spinner-bg: #E5E7EB; /* light gray-200 */
+    --spinner-fg: #6B7281; /* mid gray-500 */
+    --body-bg: #F9FAFB; /* gray-50 */
+    --body-bg-pattern: #F3F4F6; /* gray-100 */
+    color-scheme: light;
+  }
+  .dark:root {
+    --spinner-bg: #2A2A2A;
+    --spinner-fg: #E0E0E0;
+    --body-bg: #0A0A0A;
+    --body-bg-pattern: #141414;
+     color-scheme: dark;
+  }
+  body {
+    background-color: var(--body-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='var(--body-bg-pattern)' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    transition: background-color 0.5s ease;
+  }
+  #plexus-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  #preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--body-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, background-color 0.5s ease;
+  }
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--spinner-bg);
+    border-top-color: var(--spinner-fg);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transition: border-color 0.5s ease;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .section-container .section-title {
+    opacity: 0;
+  }
+  .section-container.is-visible .section-title {
+    animation: slideIn 0.7s ease-out forwards;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #2A2A2A;
+    border-radius: 3px;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #A0A0A0;
+  }
+   ::-webkit-scrollbar-thumb {
+    background: #d1d5db; /* gray-300 */
+    border-radius: 3px;
+  }
+   ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af; /* gray-400 */
+  }
+
+
+  /* Spotlight effect */
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle 250px at var(--spotlight-x) var(--spotlight-y),
+      rgba(107, 114, 128, 0.1), /* gray-500 */
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  .dark .spotlight-card::before {
+     background: radial-gradient(
+      circle 250px at var(--spotlight-x) var(--spotlight-y),
+      rgba(224, 224, 224, 0.1),
+      transparent
+    );
+  }
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+</style>
+</head>
+  <body>
+    <canvas id="plexus-bg"></canvas>
+    <div id="preloader">
+      <div class="spinner"></div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
