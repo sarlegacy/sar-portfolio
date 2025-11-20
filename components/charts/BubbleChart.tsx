@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { ScatterChart, Scatter, ResponsiveContainer, ZAxis, XAxis, YAxis, Tooltip } from 'recharts';
 import { Skill } from '../../types';
 
@@ -6,7 +6,22 @@ interface BubbleChartProps {
   data: Skill[];
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+// Define a specific type for the tooltip payload to avoid using `any`.
+interface CustomTooltipPayload {
+  payload: {
+    name: string;
+    value: number;
+    description: string;
+  };
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: CustomTooltipPayload[];
+}
+
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -20,8 +35,17 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
+// Props passed by Recharts to the custom shape component
+interface CustomBubbleProps {
+  cx: number;
+  cy: number;
+  r: number;
+  index: number;
+  payload: Skill & { x: number; y: number; isTop: boolean };
+  hoveredSkill: string | null;
+}
 
-const CustomBubble = React.memo((props: any) => {
+const CustomBubble = React.memo((props: CustomBubbleProps) => {
   const { cx, cy, payload, r: radius, index, hoveredSkill } = props;
   const [isSelfHovered, setIsSelfHovered] = useState(false);
   
@@ -105,6 +129,11 @@ const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
     }
     return positions;
   }, [data]);
+
+  const renderBubble = useCallback(
+    (props: Omit<CustomBubbleProps, 'hoveredSkill'>) => <CustomBubble {...props} hoveredSkill={hoveredSkill} />,
+    [hoveredSkill]
+  );
   
   return (
     <div className="w-full h-full flex flex-col">
@@ -129,7 +158,7 @@ const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
             <YAxis type="number" dataKey="y" hide={true} domain={[0, 300]} />
             <ZAxis type="number" dataKey="value" range={[40, 90]} />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
-            <Scatter data={positionedData} shape={<CustomBubble hoveredSkill={hoveredSkill} />} />
+            <Scatter data={positionedData} shape={renderBubble} />
           </ScatterChart>
         </ResponsiveContainer>
       </div>

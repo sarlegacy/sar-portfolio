@@ -1,62 +1,29 @@
-import React, { useRef, useEffect } from 'react';
-import SkillCarousel from '../SkillCarousel';
-import { skillsData, profileData, servicesData } from '../../constants';
+
+import React, { useRef } from 'react';
+import { skillsData, servicesData, testimonialsData } from '../../constants';
 import StaggeredList from '../StaggeredList';
 import TiltCard from '../TiltCard';
 import ServiceCard from '../ServiceCard';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import TestimonialCard from '../TestimonialCard';
 
-const SpotlightCard: React.FC<{children: React.ReactNode}> = ({ children }) => {
-    const cardRef = useRef<HTMLDivElement>(null);
+const HomePage: React.FC = () => {
+    const skillsRef = useRef<HTMLDivElement>(null);
+    const entry = useIntersectionObserver(skillsRef, { threshold: 0.5, triggerOnce: true });
+    const isVisible = !!entry?.isIntersecting;
+    
+    // Dynamically select the top 4 skills to display, making the component more maintainable.
+    const skillsToShow = [...skillsData].sort((a, b) => b.value - a.value).slice(0, 4);
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (!cardRef.current) return;
-            const rect = cardRef.current.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            cardRef.current.style.setProperty('--spotlight-x', `${x}px`);
-            cardRef.current.style.setProperty('--spotlight-y', `${y}px`);
-        };
-
-        const currentRef = cardRef.current;
-        currentRef?.addEventListener('mousemove', handleMouseMove);
-        return () => currentRef?.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
-    return <div ref={cardRef} className="relative spotlight-card h-full">{children}</div>;
-}
-
-
-const HomePage = () => {
-    const typingText = "An Entrepreneur & Software Developer.";
     return (
-        <section id="home" className="h-full snap-start flex flex-col justify-center p-2 section-container is-visible">
-            <div className="h-full flex flex-col gap-8 overflow-y-auto py-4 pr-2">
+        <section id="home" className="min-h-screen lg:h-full snap-start flex flex-col justify-center p-2 section-container">
+            <div className="flex-grow flex flex-col gap-8 lg:overflow-y-auto overflow-visible py-4 pr-2">
                 <StaggeredList>
                     <TiltCard>
-                        <SpotlightCard>
-                            <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
-                                <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-500">
-                                    Hi, I'm {profileData.name.split(' ')[0]}.
-                                    <br />
-                                    <span 
-                                        className="inline-block overflow-hidden whitespace-nowrap border-r-4 border-r-gray-800 dark:border-r-brand-green pr-1 align-bottom animate-typing transition-colors duration-500"
-                                        style={{ width: `${typingText.length}ch` }}
-                                    >
-                                        {typingText}
-                                    </span>
-                                </h2>
-                                <p className="text-gray-600 dark:text-mono-light max-w-2xl opacity-0 transition-colors duration-500" style={{ animation: 'fadeIn 1s ease-out 3.5s forwards' }}>
-                                    I build innovative digital solutions and lead projects from concept to completion. With a diverse skill set in technology, marketing, and management, I turn ambitious ideas into successful realities.
-                                </p>
-                            </div>
-                        </SpotlightCard>
-                    </TiltCard>
-
-                    <TiltCard>
-                        <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
+                        <div className="bg-gray-50 dark:bg-mono-dark p-8 rounded-2xl border border-gray-200/50 dark:border-mono-mid h-full transition-colors duration-500">
                             <h3 className="font-display text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">What I Do</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* Services Grid: 1 col on mobile, 2 on small-desktop, 3 on large screens */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {servicesData.map((service, index) => (
                                     <ServiceCard key={index} service={service} />
                                 ))}
@@ -65,9 +32,37 @@ const HomePage = () => {
                     </TiltCard>
 
                     <TiltCard>
-                        <div className="bg-white dark:bg-mono-dark p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full transition-colors duration-500">
+                        <div className="bg-gray-50 dark:bg-mono-dark p-8 rounded-2xl border border-gray-200/50 dark:border-mono-mid h-full transition-colors duration-500 flex flex-col">
                             <h3 className="font-display text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">My Skills</h3>
-                            <SkillCarousel data={skillsData} />
+                            {/* Skills Grid: 2 cols mobile, 3 tablet, 4 desktop */}
+                            <div ref={skillsRef} className="flex-grow grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-6">
+                                {skillsToShow.map((skill, index) => (
+                                    <div key={skill.name} className="group cursor-pointer">
+                                        <div className="flex justify-between items-baseline mb-1 transition-transform duration-300 group-hover:-translate-y-0.5">
+                                            <h4 className="font-semibold text-gray-800 dark:text-mono-white transition-colors duration-300 group-hover:text-brand-green">{skill.name}</h4>
+                                            <span className="text-sm font-medium text-gray-500 dark:text-mono-light transition-colors duration-300 group-hover:text-gray-900 dark:group-hover:text-white">{skill.value}%</span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 dark:bg-mono-mid rounded-full h-2 transition-all duration-300 overflow-hidden group-hover:shadow-[0_0_12px_rgba(160,219,36,0.4)] border border-transparent group-hover:border-brand-green/20">
+                                            <div 
+                                                className="bg-gradient-to-r from-brand-green to-brand-blue h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-110"
+                                                style={{ width: isVisible ? `${skill.value}%` : '0%', transitionDelay: `${index * 100}ms` }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </TiltCard>
+
+                    <TiltCard>
+                        <div className="bg-gray-50 dark:bg-mono-dark p-8 rounded-2xl border border-gray-200/50 dark:border-mono-mid h-full transition-colors duration-500">
+                            <h3 className="font-display text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-500">What My Clients Say</h3>
+                            {/* Testimonials Grid: 1 col mobile, 2 cols tablet/desktop, 3 cols ultrawide */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
+                                {testimonialsData.map((testimonial) => (
+                                    <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+                                ))}
+                            </div>
                         </div>
                     </TiltCard>
                 </StaggeredList>

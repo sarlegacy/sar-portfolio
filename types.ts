@@ -1,4 +1,4 @@
-// FIX: Import React to resolve the "Cannot find namespace 'React'" error.
+
 import React from 'react';
 
 export interface Skill {
@@ -46,3 +46,18 @@ export interface Service {
   title: string;
   description: string;
 }
+
+export interface Testimonial {
+  id: number;
+  quote: string;
+  name: string;
+  role: string;
+  avatar: string;
+}
+
+export interface Message {
+  role: 'user' | 'model';
+  content: string;
+}
+
+export type View = 'home' | 'projects' | 'experience' | 'tracking' | 'contact';

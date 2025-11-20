@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { profileData } from '../constants';
 import { FacebookIcon, InstagramIcon, LinkedinIcon, DownloadIcon, InfoIcon } from './icons/Icons';
@@ -7,44 +8,81 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onAboutClick }) => {
+    const socialLinks = [
+        { href: profileData.socials.facebook, icon: FacebookIcon, label: 'Facebook' },
+        { href: profileData.socials.instagram, icon: InstagramIcon, label: 'Instagram' },
+        { href: profileData.socials.linkedin, icon: LinkedinIcon, label: 'LinkedIn' },
+    ];
+
     return (
-        <aside className="lg:sticky top-4 flex flex-col items-center lg:items-start bg-white/60 dark:bg-mono-dark/60 backdrop-blur-xl p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-mono-mid h-full self-start transition-all duration-300 hover:border-gray-400/30 dark:hover:border-mono-light/30 hover:shadow-[0_0_30px_rgba(0,0,0,0.05)] dark:hover:shadow-[0_0_30px_rgba(160,219,36,0.1)] hover:scale-[1.01]">
-            <div className="relative mb-6 group">
-                <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-green to-brand-blue rounded-full animate-rotate-glow opacity-30 group-hover:opacity-60 group-hover:scale-105 transition-all duration-300 blur-lg"></div>
-                <div className="relative group-hover:scale-105 transition-transform duration-300">
+        <aside className="lg:sticky lg:top-4 flex flex-col items-center lg:items-start bg-white dark:bg-mono-dark/60 p-6 sm:p-8 rounded-none sm:rounded-3xl border-b sm:border border-gray-200 dark:border-mono-mid h-auto lg:h-full self-start transition-all duration-500 hover:border-gray-300/50 dark:hover:border-mono-light/20 shadow-sm sm:hover:shadow-2xl hover:shadow-gray-200/50 dark:hover:shadow-black/30 mb-4 lg:mb-0 z-10 backdrop-blur-md">
+            
+            <div className="relative mb-6 sm:mb-8 group w-full flex justify-center lg:justify-start">
+                <div className="relative">
+                    {/* Decorative glow behind avatar */}
+                    <div className="absolute -inset-4 bg-gradient-to-br from-brand-green/40 to-brand-blue/40 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+                    
                     <img 
                         src={profileData.avatar} 
                         alt={`${profileData.name} - professional headshot`} 
-                        className="w-56 h-56 rounded-full object-cover transition-all duration-300 shadow-[0_0_0_4px_#FFF] dark:shadow-[0_0_0_4px_#111111] group-hover:shadow-[0_0_25px_rgba(0,0,0,0.1),_0_0_0_6px_rgba(229,231,235,0.5)] dark:group-hover:shadow-[0_0_25px_rgba(160,219,36,0.3),_0_0_0_6px_rgba(160,219,36,0.5)]" 
+                        className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rounded-full object-cover border-4 border-white dark:border-mono-dark shadow-xl transition-transform duration-500 group-hover:scale-[1.02]" 
                     />
-                    <div className="absolute bottom-5 right-5 w-5 h-5 bg-brand-green rounded-full border-2 border-white dark:border-mono-dark animate-breathing transition-colors duration-500" title="Available for hire"></div>
+                    
+                    {/* Live Status Indicator */}
+                    <div className="absolute bottom-1 right-1 sm:bottom-3 sm:right-3 lg:bottom-4 lg:right-4 flex h-4 w-4 sm:h-5 sm:w-5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-green opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-4 w-4 sm:h-5 sm:w-5 bg-brand-green border-2 border-white dark:border-mono-dark"></span>
+                    </div>
                 </div>
             </div>
-            <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white text-center lg:text-left transition-colors duration-500">{profileData.name}</h1>
-            <h2 className="font-display text-md text-gray-800 dark:text-white font-semibold mb-4 text-center lg:text-left transition-colors duration-500">{profileData.title}</h2>
-            <p className="text-gray-600 dark:text-mono-light text-sm mb-8 text-center lg:text-left transition-colors duration-500">{profileData.bio}</p>
-            <div className="flex justify-center lg:justify-start gap-4 mb-8 w-full">
-              <a href={profileData.socials.facebook} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-200 dark:bg-mono-mid rounded-full text-gray-500 dark:text-mono-light hover:text-black dark:hover:text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_20px_rgba(160,219,36,0.2)]" aria-label="Facebook profile">
-                <FacebookIcon />
-              </a>
-              <a href={profileData.socials.instagram} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-200 dark:bg-mono-mid rounded-full text-gray-500 dark:text-mono-light hover:text-black dark:hover:text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_20px_rgba(160,219,36,0.2)]" aria-label="Instagram profile">
-                <InstagramIcon />
-              </a>
-              <a href={profileData.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-200 dark:bg-mono-mid rounded-full text-gray-500 dark:text-mono-light hover:text-black dark:hover:text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_20px_rgba(160,219,36,0.2)]" aria-label="LinkedIn profile">
-                <LinkedinIcon />
-              </a>
+
+            <div className="text-center lg:text-left w-full">
+                <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-2 transition-colors duration-500">
+                    {profileData.name}
+                </h1>
+                <h2 className="font-sans text-sm sm:text-base font-medium text-brand-green mb-4 tracking-wide uppercase">
+                    {profileData.title}
+                </h2>
+                <p className="text-gray-500 dark:text-mono-light text-sm sm:text-base leading-relaxed mb-8 max-w-md mx-auto lg:mx-0">
+                    {profileData.bio}
+                </p>
             </div>
-            <div className="w-full flex flex-col sm:flex-row gap-4">
+            
+            {/* Social Links */}
+            <div className="flex justify-center lg:justify-start gap-3 mb-8 w-full">
+                {socialLinks.map((link, index) => {
+                    const Icon = link.icon;
+                    return (
+                        <a 
+                            key={index}
+                            href={link.href} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="p-3 bg-gray-50 dark:bg-mono-mid rounded-xl text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-mono-mid/50 transition-all duration-300 hover:-translate-y-1 hover:bg-white dark:hover:bg-mono-mid hover:text-brand-green dark:hover:text-brand-green hover:shadow-md hover:border-brand-green/30" 
+                            aria-label={`${link.label} profile`}
+                        >
+                            <Icon />
+                        </a>
+                    );
+                })}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="w-full flex flex-row gap-3 sm:gap-4 mt-auto">
                 <button
                     onClick={onAboutClick}
-                    className="flex-1 flex items-center justify-center gap-2 bg-gray-200 dark:bg-mono-mid text-gray-600 dark:text-mono-light font-bold py-3 px-4 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:text-black dark:hover:text-white hover:shadow-lg dark:hover:shadow-black/50"
+                    className="flex-1 flex items-center justify-center gap-2 bg-white dark:bg-mono-mid border border-gray-200 dark:border-mono-mid/50 text-gray-700 dark:text-mono-light font-semibold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-gray-50 dark:hover:bg-mono-mid/80 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-mono-light/30 active:scale-95"
                 >
-                    <InfoIcon />
-                    <span>About Me</span>
+                    <InfoIcon className="w-4 h-4" />
+                    <span>About</span>
                 </button>
-                <a href="/saiful-alam-rafi-cv.pdf" download className="flex-1 flex items-center justify-center gap-2 bg-brand-green text-mono-black font-bold py-3 px-4 rounded-lg transition-all duration-300 hover:-translate-y-1 shadow-[0_5px_20px_rgba(160,219,36,0.2)] hover:shadow-[0_8px_30px_rgba(160,219,36,0.3)]">
+                <a 
+                    href="/saiful-alam-rafi-cv.pdf" 
+                    download 
+                    className="flex-1 flex items-center justify-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-mono-black font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-brand-green dark:hover:bg-brand-green hover:text-mono-black hover:shadow-[0_0_20px_rgba(160,219,36,0.3)] active:scale-95 group"
+                >
                     <DownloadIcon />
-                    <span>Download CV</span>
+                    <span>Resume</span>
                 </a>
             </div>
         </aside>

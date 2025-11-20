@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Skill } from '../types';
 import { useIntersectionObserver } from './hooks/useIntersectionObserver';

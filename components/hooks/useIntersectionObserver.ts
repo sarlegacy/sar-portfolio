@@ -1,3 +1,4 @@
+
 import { useState, useEffect, RefObject } from 'react';
 
 interface IntersectionObserverOptions extends IntersectionObserverInit {
@@ -36,8 +37,9 @@ export const useIntersectionObserver = (
 
         return () => observer.disconnect();
         
+    // Use individual properties to avoid reference inequality issues with the options object
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [elementRef, JSON.stringify(threshold), root, rootMargin, triggerOnce]);
+    }, [elementRef, threshold, root, rootMargin, triggerOnce]);
 
     return entry;
 };
@@ -61,6 +63,9 @@ export const useMultiIntersectionObserver = (
 
         return () => {
             elements.forEach(el => observer.unobserve(el));
+            observer.disconnect();
         };
-    }, [callback, options, containerRef]);
+    // Depend on specific options properties instead of the options object reference
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [callback, options.root, options.rootMargin, options.threshold, containerRef]);
 };

@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { View } from './PortfolioApp';
+import { View } from '../types';
 
 interface NavLinkProps {
   viewName: View;
@@ -20,7 +21,7 @@ const NavLink: React.FC<NavLinkProps> = ({ viewName, activeView, onClick, childr
     <a
       href={`#${viewName}`}
       onClick={handleClick}
-      className={`relative px-4 py-2 text-sm font-semibold transition-colors rounded-full duration-300 ${isActive ? 'text-mono-black bg-brand-green' : 'text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-white'}`}
+      className={`relative px-4 py-2 text-sm font-semibold transition-colors rounded-full duration-300 ${isActive ? 'text-mono-black bg-brand-green' : 'text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-mono-mid'}`}
       aria-current={isActive ? 'page' : undefined}
     >
       {children}

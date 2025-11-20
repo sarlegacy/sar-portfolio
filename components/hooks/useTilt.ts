@@ -1,11 +1,18 @@
+
 import { useState, useRef, useMemo, useEffect } from 'react';
 
 export const useTilt = () => {
     const ref = useRef<HTMLDivElement>(null);
     const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0, scale: 1, translateY: 0, brightness: 1 });
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    useEffect(() => {
+        // Disable tilt on touch devices to avoid interfering with scrolling
+        setIsDisabled(window.matchMedia('(hover: none)').matches);
+    }, []);
 
     const handleMouseMove = (e: MouseEvent) => {
-        if (!ref.current) return;
+        if (!ref.current || isDisabled) return;
         
         const { left, top, width, height } = ref.current.getBoundingClientRect();
         const x = e.clientX - left;
@@ -23,7 +30,7 @@ export const useTilt = () => {
 
     useEffect(() => {
         const currentRef = ref.current;
-        if (currentRef) {
+        if (currentRef && !isDisabled) {
             currentRef.addEventListener('mousemove', handleMouseMove);
             currentRef.addEventListener('mouseleave', handleMouseLeave);
         }
@@ -34,7 +41,7 @@ export const useTilt = () => {
                 currentRef.removeEventListener('mouseleave', handleMouseLeave);
             }
         };
-    }, []);
+    }, [isDisabled]);
 
 
     const style = useMemo(() => ({

@@ -1,4 +1,5 @@
-import { ProfileData, Skill, Project, ExperienceItem, Service } from './types';
+
+import { ProfileData, Skill, Project, ExperienceItem, Service, Testimonial } from './types';
 import { WebAppIcon, StrategyIcon, LeadershipIcon } from './components/icons/Icons';
 
 export const profileData: ProfileData = {
@@ -28,6 +29,9 @@ export const skillsData: Skill[] = [
     { name: 'UI/UX Design', value: 75, description: 'Translating user needs into intuitive and visually appealing interface designs.' },
     { name: 'Node.js', value: 70, description: 'Building server-side applications and APIs for full-stack development.' },
     { name: 'Event Planning', value: 82, description: 'Organizing and executing successful events from concept to completion.' },
+    { name: 'Tailwind CSS', value: 92, description: 'Rapidly building custom, responsive user interfaces using utility-first principles.' },
+    { name: 'GraphQL', value: 84, description: 'Designing efficient APIs and optimizing data fetching for improved application performance.' },
+    { name: 'Strategic Planning', value: 86, description: 'Developing long-term business strategies and actionable roadmaps for sustainable growth.' },
 ];
 
 export const projectsData: Project[] = [
@@ -125,5 +129,29 @@ export const experienceData: ExperienceItem[] = [
       'Provided exceptional service to clients and stakeholders, ensuring high satisfaction rates.',
     ],
     logo: digitalStartLogo
+  },
+];
+
+export const testimonialsData: Testimonial[] = [
+  {
+    id: 1,
+    quote: "Saiful is a rare talent who combines technical expertise with a keen sense of product and business strategy. His contributions were instrumental in our project's success.",
+    name: 'Jane Doe',
+    role: 'CEO, Innovatech Solutions',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3',
+  },
+  {
+    id: 2,
+    quote: "Working with Saiful was a pleasure. He's a proactive problem-solver and a fantastic collaborator. His ability to lead a team and deliver high-quality work is truly impressive.",
+    name: 'John Smith',
+    role: 'Project Manager, Creative Labs',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3',
+  },
+   {
+    id: 3,
+    quote: "His dedication to quality and user experience is second to none. He consistently went above and beyond to ensure our marketing campaigns were not just effective, but also beautifully executed.",
+    name: 'Emily Johnson',
+    role: 'Marketing Director, Digital Start LLC',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3',
   },
 ];

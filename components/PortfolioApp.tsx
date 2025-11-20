@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MenuIcon, XIcon, ArrowUpIcon, SunIcon, MoonIcon } from './icons/Icons';
+
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { SunIcon, MoonIcon, ArrowUpIcon } from './icons/Icons';
 import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import ExperiencePage from './pages/ExperiencePage';
@@ -8,10 +9,14 @@ import AboutMeModal from './AboutMeModal';
 import Sidebar from './Sidebar';
 import NavLink from './NavLink';
 import { Theme } from '../App';
+import { View } from '../types';
 import { useMultiIntersectionObserver } from './hooks/useIntersectionObserver';
 import TrackingPage from './pages/TrackingPage';
-
-export type View = 'home' | 'projects' | 'experience' | 'tracking' | 'contact';
+import { ScrollContainerProvider } from './context/ScrollContext';
+import AIAssistant from './AIAssistant';
+import MobileNavBar from './MobileNavBar';
+import { smoothScrollTo } from '../utils/scroll';
+import AnimatedBackground from './AnimatedBackground';
 
 interface PortfolioAppProps {
     theme: Theme;
@@ -20,55 +25,30 @@ interface PortfolioAppProps {
 
 const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => {
   const [visibleSection, setVisibleSection] = useState<View>('home');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024); 
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  
   const mainContentRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null); // To hold the YouTube player instance
 
   useEffect(() => {
-    // This function will be called by the YouTube Iframe API script
-    (window as any).onYouTubeIframeAPIReady = () => {
-      playerRef.current = new (window as any).YT.Player('youtube-bg', {
-        videoId: '_Sl8diqCAFw',
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          loop: 1,
-          playlist: '_Sl8diqCAFw', // Required for loop to work
-          mute: 1,
-          playsinline: 1,
-          showinfo: 0,
-          modestbranding: 1,
-          fs: 0,
-        },
-        events: {
-          onReady: (event: any) => {
-            event.target.playVideo();
-          },
-        },
-      });
+    const handleResize = () => {
+        setIsMobile(window.innerWidth < 1024);
     };
 
-    // If the API is already loaded, manually call the function
-    if (typeof (window as any).YT !== 'undefined' && typeof (window as any).YT.Player !== 'undefined') {
-        (window as any).onYouTubeIframeAPIReady();
-    }
-
-    return () => {
-        // Clean up the player instance on component unmount
-        if (playerRef.current && typeof playerRef.current.destroy === 'function') {
-            playerRef.current.destroy();
-        }
-        (window as any).onYouTubeIframeAPIReady = undefined;
-    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const toggleTheme = () => {
-    onThemeChange(theme === 'dark' ? 'light' : 'dark');
-  };
   
-  const intersectionOptions = { root: mainContentRef.current, threshold: 0.5 };
+  const toggleTheme = useCallback(() => {
+    onThemeChange(theme === 'dark' ? 'light' : 'dark');
+  }, [theme, onThemeChange]);
+  
+  const intersectionOptions = useMemo(() => ({
+    root: null, 
+    threshold: 0.3 
+  }), []);
+
   useMultiIntersectionObserver((entry) => {
     if (entry.isIntersecting) {
       setVisibleSection(entry.target.id as View);
@@ -80,36 +60,52 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
   useEffect(() => {
     const handleScroll = () => {
         if (mainContentRef.current) {
-            setShowBackToTop(mainContentRef.current.scrollTop > 200);
+            setShowBackToTop(mainContentRef.current.scrollTop > 300);
         }
     };
-
     const currentRef = mainContentRef.current;
     currentRef?.addEventListener('scroll', handleScroll);
     return () => currentRef?.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
+
+  const handleNavClick = useCallback((view: View) => {
+    const section = document.getElementById(view) as HTMLElement | null;
+    const container = mainContentRef.current;
+    if (section && container) {
+      const containerRect = container.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const targetPosition = sectionRect.top - containerRect.top + container.scrollTop;
+      
+      smoothScrollTo(container, targetPosition);
+    } else if (isMobile && section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isMobile]);
+
+  const handleBackToTop = useCallback(() => {
+    if (mainContentRef.current) {
+      smoothScrollTo(mainContentRef.current, 0);
+    } else {
+       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, []);
 
-  const handleNavClick = (view: View) => {
-    document.getElementById(view)?.scrollIntoView({ behavior: 'smooth' });
-    if(isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  };
-
-  const handleBackToTop = () => {
-    mainContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-
   return (
-    <>
-      <div className="bg-white/60 dark:bg-mono-dark/80 backdrop-blur-xl p-0.5 rounded-2xl w-full shadow-2xl shadow-black/50 transition-colors duration-500">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-400 to-gray-600 dark:from-mono-white dark:to-mono-light rounded-2xl animate-border-glow blur opacity-20"></div>
-        <div className="relative bg-gray-50/80 dark:bg-mono-dark/90 rounded-2xl transition-colors duration-500 overflow-hidden">
-          <header className="relative flex items-center justify-between p-4 border-b border-gray-200 dark:border-mono-mid/30 transition-colors duration-500">
-            <h3 className="font-display text-xl font-bold text-gray-900 dark:text-white transition-colors duration-500">SAR Portfolio</h3>
-             <div className="flex items-center gap-2">
-                <nav className="hidden md:flex items-center gap-2">
+    <ScrollContainerProvider value={{ scrollContainerRef: mainContentRef }}>
+      <AnimatedBackground />
+
+      <div className="bg-gray-100/50 dark:bg-mono-dark/80 p-0 sm:p-1 lg:p-2 rounded-none sm:rounded-3xl w-full transition-colors duration-500 h-[100dvh] sm:h-[95vh] flex flex-col backdrop-blur-sm relative shadow-2xl shadow-black/20">
+        {/* Main Card Wrapper */}
+        <div className="relative bg-white/80 dark:bg-mono-dark/90 rounded-none sm:rounded-[1.25rem] transition-colors duration-500 overflow-hidden h-full flex flex-col border border-white/50 dark:border-white/5">
+          
+          {/* Header */}
+          <header className="relative flex items-center justify-between p-4 sm:px-6 sm:py-5 border-b border-gray-200/50 dark:border-white/5 transition-colors duration-500 flex-shrink-0 z-20 bg-white/60 dark:bg-mono-dark/60 backdrop-blur-xl sticky top-0 sm:relative">
+            <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
+                <span className="w-2 h-2 bg-brand-green rounded-full inline-block animate-pulse"></span>
+                SAR Portfolio
+            </h3>
+             <div className="flex items-center gap-4">
+                <nav className="hidden lg:flex items-center gap-1 p-1 bg-gray-100/50 dark:bg-white/5 rounded-full border border-gray-200/50 dark:border-white/5 backdrop-blur-md">
                   <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
                   <NavLink viewName="projects" activeView={visibleSection} onClick={handleNavClick}>Projects</NavLink>
                   <NavLink viewName="experience" activeView={visibleSection} onClick={handleNavClick}>Experience</NavLink>
@@ -118,54 +114,54 @@ const PortfolioApp: React.FC<PortfolioAppProps> = ({ theme, onThemeChange }) => 
                 </nav>
                 <button
                     onClick={toggleTheme}
-                    className="p-2 rounded-full text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-mono-mid transition-colors"
+                    className="p-2.5 rounded-full text-gray-500 dark:text-mono-light hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 focus:outline-none active:scale-90"
                     aria-label="Toggle theme"
                 >
                     {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
                 </button>
-                <button className="md:hidden text-gray-500 dark:text-mono-light" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle mobile menu">
-                  {isMobileMenuOpen ? <XIcon /> : <MenuIcon />}
-                </button>
             </div>
           </header>
 
-          <div className={`absolute top-[65px] left-0 right-0 z-20 bg-gray-50/90 dark:bg-mono-dark/90 backdrop-blur-sm md:hidden transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'transform translate-y-0' : 'transform -translate-y-full'}`}>
-            <nav className="flex flex-col items-center gap-4 p-4 border-b border-gray-200 dark:border-mono-mid/30">
-              <NavLink viewName="home" activeView={visibleSection} onClick={handleNavClick}>Home</NavLink>
-              <NavLink viewName="projects" activeView={visibleSection} onClick={handleNavClick}>Projects</NavLink>
-              <NavLink viewName="experience" activeView={visibleSection} onClick={handleNavClick}>Experience</NavLink>
-               <NavLink viewName="tracking" activeView={visibleSection} onClick={handleNavClick}>Live Tracking</NavLink>
-              <NavLink viewName="contact" activeView={visibleSection} onClick={handleNavClick}>Contact</NavLink>
-            </nav>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-4">
-            <div className="lg:col-span-1">
-                <Sidebar onAboutClick={() => setIsAboutModalOpen(true)} />
+          <div 
+            ref={isMobile ? mainContentRef : null}
+            className={`grid grid-cols-1 lg:grid-cols-[minmax(280px,25%)_1fr] gap-0 sm:gap-6 lg:gap-8 xl:gap-10 p-0 sm:p-6 flex-grow relative ${isMobile ? 'overflow-y-auto scroll-smooth' : 'overflow-hidden'}`}
+          >
+            <div className="flex flex-col">
+                <div className="w-full max-w-2xl mx-auto lg:max-w-none lg:mx-0 h-full">
+                    <Sidebar onAboutClick={() => setIsAboutModalOpen(true)} />
+                </div>
             </div>
             <main 
-              ref={mainContentRef} 
-              className="lg:col-span-3 h-[calc(100vh-19rem)] sm:h-[calc(100vh-21rem)] overflow-y-scroll snap-y snap-mandatory scroll-smooth relative"
+              ref={!isMobile ? mainContentRef : null} 
+              className={`relative ${isMobile ? 'h-auto overflow-visible pb-32' : 'h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth pb-6'}`}
             >
-              <HomePage />
-              <ProjectsPage />
-              <ExperiencePage />
-              <TrackingPage />
-              <ContactPage />
-
-                <button
-                    onClick={handleBackToTop}
-                    className={`absolute bottom-4 right-4 z-20 bg-gray-300/70 dark:bg-mono-mid/70 backdrop-blur-sm p-3 rounded-full text-gray-800 dark:text-mono-white hover:bg-gray-800 hover:text-white dark:hover:bg-mono-white dark:hover:text-mono-black transition-all duration-300 ${showBackToTop ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
-                    aria-label="Back to top"
-                >
-                    <ArrowUpIcon className="w-5 h-5" />
-                </button>
+                <div className="w-full max-w-5xl mx-auto lg:max-w-none space-y-16 sm:space-y-24">
+                  <HomePage />
+                  <ProjectsPage />
+                  <ExperiencePage />
+                  <TrackingPage />
+                  <ContactPage />
+                </div>
+              
+              <button
+                  onClick={handleBackToTop}
+                  className={`fixed ${isMobile ? 'bottom-24 right-4' : 'bottom-8 right-8'} z-30 bg-white/80 dark:bg-mono-mid/80 backdrop-blur-md border border-gray-200 dark:border-mono-mid p-3 rounded-full text-gray-900 dark:text-mono-white hover:bg-brand-green hover:text-mono-black dark:hover:bg-brand-green dark:hover:text-mono-black transition-all duration-300 shadow-lg ${showBackToTop ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'}`}
+                  aria-label="Back to top"
+              >
+                  <ArrowUpIcon className="w-5 h-5" />
+              </button>
             </main>
           </div>
+
+          {isMobile && (
+            <MobileNavBar visibleSection={visibleSection} onNavClick={handleNavClick} />
+          )}
+
         </div>
       </div>
       <AboutMeModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} />
-    </>
+      <AIAssistant />
+    </ScrollContainerProvider>
   );
 };
 

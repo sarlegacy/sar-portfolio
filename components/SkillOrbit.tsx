@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { Skill } from '../types';
 
@@ -47,7 +48,8 @@ const SkillOrbit: React.FC<SkillOrbitProps> = ({ data }) => {
       </div>
 
       {Object.entries(skillTiers).map(([tierStr, skills]) => {
-        // FIX: Cast `skills` to `Skill[]` as TypeScript may incorrectly infer it as `unknown` when using `Object.entries`.
+        // Cast `skills` to `Skill[]` because Object.entries on a typed object
+        // can result in a less specific type for the value.
         const skillArray = skills as Skill[];
         if (skillArray.length === 0) return null;
         const tier = parseInt(tierStr, 10);
