@@ -1,4 +1,3 @@
-
 import { useState, useRef, useMemo, useEffect } from 'react';
 
 export const useTilt = () => {
@@ -11,7 +10,7 @@ export const useTilt = () => {
         setIsDisabled(window.matchMedia('(hover: none)').matches);
     }, []);
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleInteractionStart = (e: MouseEvent) => {
         if (!ref.current || isDisabled) return;
         
         const { left, top, width, height } = ref.current.getBoundingClientRect();
@@ -23,22 +22,31 @@ export const useTilt = () => {
         
         setTransform({ rotateX, rotateY, scale: 1.05, translateY: -5, brightness: 1.1 });
     };
+    
+    const handleFocus = () => {
+        if (isDisabled) return;
+        setTransform({ rotateX: -5, rotateY: 5, scale: 1.05, translateY: -5, brightness: 1.1 });
+    }
 
-    const handleMouseLeave = () => {
+    const handleInteractionEnd = () => {
         setTransform({ rotateX: 0, rotateY: 0, scale: 1, translateY: 0, brightness: 1 });
     };
 
     useEffect(() => {
         const currentRef = ref.current;
         if (currentRef && !isDisabled) {
-            currentRef.addEventListener('mousemove', handleMouseMove);
-            currentRef.addEventListener('mouseleave', handleMouseLeave);
+            currentRef.addEventListener('mousemove', handleInteractionStart);
+            currentRef.addEventListener('mouseleave', handleInteractionEnd);
+            currentRef.addEventListener('focus', handleFocus);
+            currentRef.addEventListener('blur', handleInteractionEnd);
         }
 
         return () => {
             if (currentRef) {
-                currentRef.removeEventListener('mousemove', handleMouseMove);
-                currentRef.removeEventListener('mouseleave', handleMouseLeave);
+                currentRef.removeEventListener('mousemove', handleInteractionStart);
+                currentRef.removeEventListener('mouseleave', handleInteractionEnd);
+                currentRef.removeEventListener('focus', handleFocus);
+                currentRef.removeEventListener('blur', handleInteractionEnd);
             }
         };
     }, [isDisabled]);

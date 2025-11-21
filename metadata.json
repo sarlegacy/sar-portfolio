@@ -1,7 +1,5 @@
 {
   "name": "SAR PORTFOLIO",
   "description": "A personal portfolio website for Saiful Alam Rafi, showcasing projects, skills, and experience with a modern, interactive design.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }

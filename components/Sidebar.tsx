@@ -25,7 +25,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onAboutClick, onViewResume }) => {
                     
                     <img 
                         src={profileData.avatar} 
-                        alt={`${profileData.name} - professional headshot`} 
+                        alt={`${profileData.name} - professional headshot`}
+                        loading="lazy" 
                         className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 rounded-full object-cover border-4 border-white dark:border-mono-dark shadow-xl transition-transform duration-500 group-hover:scale-[1.05] group-hover:rotate-2" 
                     />
                     

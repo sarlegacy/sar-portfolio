@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Testimonial } from '../types';
 import { QuoteIcon } from './icons/Icons';
@@ -20,10 +19,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
                 "{testimonial.quote}"
             </p>
             <div className="flex items-center gap-4 mt-auto relative z-10">
-                <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover border-2 border-gray-200 dark:border-mono-mid transition-colors duration-300 group-hover:border-brand-green" />
+                <img 
+                    src={testimonial.avatar} 
+                    alt={testimonial.name}
+                    loading="lazy" 
+                    className="w-12 h-12 rounded-full object-cover border-2 border-gray-200 dark:border-mono-mid transition-colors duration-300 group-hover:border-brand-green" 
+                />
                 <div>
                     <h4 className="font-bold text-gray-900 dark:text-white transition-colors duration-300 group-hover:text-brand-green">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-500 dark:text-mono-light transition-colors duration-300">{testimonial.role}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">{testimonial.role}</p>
                 </div>
             </div>
         </div>

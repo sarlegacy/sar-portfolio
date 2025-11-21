@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
 import { GoogleGenAI, Chat, GenerateContentResponse } from '@google/genai';
 import { BotIcon, SendIcon, XIcon } from './icons/Icons';
@@ -239,17 +238,18 @@ const AIAssistant: React.FC = () => {
                     )}
                 </div>
 
-                <div className="p-4 border-t border-gray-200 dark:border-mono-mid flex-shrink-0">
+                {/* Footer Input Area with Glassmorphism */}
+                <div className="p-4 border-t border-gray-200 dark:border-mono-mid flex-shrink-0 bg-white/50 dark:bg-mono-mid/50 backdrop-blur-md">
                     <form onSubmit={handleFormSubmit} className="flex items-center gap-3">
                         <input
                             type="text"
                             name="message"
                             placeholder="Ask about my projects..."
-                            className="w-full bg-gray-100 dark:bg-mono-mid border-transparent rounded-full py-3 px-5 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-mono-light focus:outline-none focus:ring-2 focus:ring-brand-green transition-shadow"
+                            className="w-full bg-white dark:bg-mono-black/50 border border-gray-200 dark:border-white/10 rounded-full py-3 px-5 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-mono-light focus:outline-none focus:ring-2 focus:ring-brand-green transition-all shadow-inner"
                             disabled={isLoading || !!error}
                             autoComplete="off"
                         />
-                        <button type="submit" className="bg-brand-green text-mono-black rounded-full p-3 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100" disabled={isLoading || !!error} aria-label="Send message">
+                        <button type="submit" className="bg-brand-green text-mono-black rounded-full p-3 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 shadow-lg shadow-brand-green/20" disabled={isLoading || !!error} aria-label="Send message">
                             <SendIcon className="w-6 h-6" />
                         </button>
                     </form>

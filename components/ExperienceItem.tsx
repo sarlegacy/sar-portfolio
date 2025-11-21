@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ExperienceItem as ExperienceItemType } from '../types';
 
@@ -17,7 +16,7 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({ item }) => {
                     <div className="flex items-center gap-4">
                         {item.logo && (
                             <div className="w-12 h-12 bg-white p-2 rounded-xl border border-gray-100 shadow-sm flex-shrink-0 flex items-center justify-center">
-                                <img src={item.logo} alt={`${item.company} logo`} className="w-full h-full object-contain" />
+                                <img src={item.logo} alt={`${item.company} logo`} loading="lazy" className="w-full h-full object-contain" />
                             </div>
                         )}
                         <div>

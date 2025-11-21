@@ -30,26 +30,6 @@ const HomePage: React.FC = () => {
         <section id="home" className="min-h-screen lg:h-full snap-start flex flex-col justify-center p-2 section-container">
             <div className="flex-grow flex flex-col gap-8 lg:overflow-y-auto overflow-visible py-4 pr-2">
                 
-                {/* Startups Section */}
-                <div
-                    ref={startupsRef}
-                    className={`${isStartupsVisible ? 'animate-fade-in' : 'opacity-0 translate-y-10'}`}
-                >
-                    <SectionCard title="My Startups">
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {startupsData.map((startup, index) => (
-                                <div 
-                                    key={startup.id}
-                                    className={isStartupsVisible ? 'animate-stagger-in' : 'opacity-0'}
-                                    style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
-                                >
-                                    <StartupCard startup={startup} />
-                                </div>
-                            ))}
-                         </div>
-                    </SectionCard>
-                </div>
-
                 {/* Services Section - Staggered Animation */}
                 <div 
                     ref={servicesRef} 
@@ -67,6 +47,26 @@ const HomePage: React.FC = () => {
                                 </div>
                             ))}
                         </div>
+                    </SectionCard>
+                </div>
+                
+                {/* Startups Section */}
+                <div
+                    ref={startupsRef}
+                    className={`${isStartupsVisible ? 'animate-fade-in' : 'opacity-0 translate-y-10'}`}
+                >
+                    <SectionCard title="My Startups">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {startupsData.map((startup, index) => (
+                                <div 
+                                    key={startup.id}
+                                    className={isStartupsVisible ? 'animate-stagger-in' : 'opacity-0'}
+                                    style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
+                                >
+                                    <StartupCard startup={startup} />
+                                </div>
+                            ))}
+                         </div>
                     </SectionCard>
                 </div>
 
