@@ -1,17 +1,22 @@
 
-import { ProfileData, Skill, Project, ExperienceItem, Service, Testimonial } from './types';
+import { ProfileData, Skill, Project, ExperienceItem, Service, Testimonial, Startup, Organization, FreelanceProject, Education } from './types';
 import { WebAppIcon, StrategyIcon, LeadershipIcon } from './components/icons/Icons';
 
 export const profileData: ProfileData = {
   name: 'Saiful Alam Rafi',
   title: 'Entrepreneur & Software Developer',
-  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80&grayscale=100',
+  // IMPORTANT: Rename your image to 'saiful.jpg' and place it in the public folder
+  avatar: '/saiful.jpg', 
   bio: 'Multifaceted professional combining entrepreneurial vision with software development expertise. Passionate about building innovative solutions, leading projects, and driving digital marketing strategies.',
   longBio: `As a dynamic professional with a unique blend of technical and business acumen, I operate at the intersection of entrepreneurship, software development, and digital marketing. My journey involves not just building robust applications but also planning successful events, leading cross-functional teams, and delivering exceptional service from concept to completion.
 
 I excel at identifying market needs and translating them into tangible, high-impact digital products. Whether I'm architecting a new software solution, crafting a digital marketing campaign, or managing a complex project, my goal is to drive growth and create value.
 
 I am a strategic thinker and a hands-on leader, committed to continuous learning and pushing the boundaries of what's possible. Born on March 4th, 1999, and hailing from Bangladesh, I bring a global perspective and a rich cultural background to my work. Let's connect and build something amazing together.`,
+  location: 'Dhaka, Bangladesh',
+  email: 'portfolio.sar@gmail.com',
+  phone: '+88 01681821004',
+  website: 'www.saifulrafi.com',
   socials: {
     facebook: 'https://facebook.com',
     instagram: 'https://instagram.com',
@@ -154,4 +159,80 @@ export const testimonialsData: Testimonial[] = [
     role: 'Marketing Director, Digital Start LLC',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3',
   },
+];
+
+// New Data Sections
+
+export const startupsData: Startup[] = [
+    {
+        id: 1,
+        name: 'EventHive',
+        role: 'Co-Founder & CTO',
+        description: 'A comprehensive event management platform simplifying ticketing, scheduling, and attendee engagement for large-scale conferences.',
+        logo: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+        status: 'Active',
+        year: '2022 - Present',
+        link: '#'
+    },
+    {
+        id: 2,
+        name: 'PixelPerfect',
+        role: 'Founder',
+        description: 'A boutique digital agency providing high-end web development and branding services for tech startups in the APAC region.',
+        logo: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+        status: 'Acquired',
+        year: '2019 - 2021',
+        link: '#'
+    }
+];
+
+export const organizationsData: Organization[] = [
+    { id: 1, name: 'Innovatech', logo: innovatechLogo, role: 'Proj. Lead', duration: 'Current' },
+    { id: 2, name: 'Creative Labs', logo: creativeLabsLogo, role: 'Dev & Mkt', duration: '3 Yrs' },
+    { id: 3, name: 'Digital Start', logo: digitalStartLogo, role: 'Planner', duration: '2 Yrs' },
+    { id: 4, name: 'Google DSC', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Google_Developer_Student_Clubs_logo.svg/1200px-Google_Developer_Student_Clubs_logo.svg.png', role: 'Member', duration: '2018' },
+];
+
+export const freelanceData: FreelanceProject[] = [
+    {
+        id: 1,
+        title: 'Local Restaurant Branding',
+        client: 'Flavor Bistro',
+        outcome: 'Increased foot traffic by 25% via new website and local SEO.',
+        serviceType: 'Web & Branding',
+        year: '2023'
+    },
+    {
+        id: 2,
+        title: 'Inventory System',
+        client: 'Apex Retail',
+        outcome: 'Automated stock tracking reducing manual errors by 90%.',
+        serviceType: 'Custom Software',
+        year: '2022'
+    },
+    {
+        id: 3,
+        title: 'Event Promo Campaign',
+        client: 'TechSummit 22',
+        outcome: 'Sold out 500+ tickets within 2 weeks of launch.',
+        serviceType: 'Digital Marketing',
+        year: '2022'
+    }
+];
+
+export const educationData: Education[] = [
+    {
+        id: 1,
+        degree: 'B.Sc. in Computer Science',
+        institution: 'University of Dhaka',
+        year: '2018 - 2022',
+        description: 'Focus on Software Engineering and Artificial Intelligence. Graduated with Honors.'
+    },
+    {
+        id: 2,
+        degree: 'Higher Secondary Certificate',
+        institution: 'Dhaka City College',
+        year: '2016 - 2018',
+        description: 'Science Group. Achieved GPA 5.0/5.0.'
+    }
 ];

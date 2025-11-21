@@ -32,6 +32,10 @@ export interface ProfileData {
   avatar: string;
   bio: string;
   longBio?: string;
+  location?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
   socials: {
     facebook: string;
     instagram: string;
@@ -60,4 +64,41 @@ export interface Message {
   content: string;
 }
 
-export type View = 'home' | 'projects' | 'experience' | 'tracking' | 'contact';
+export type View = 'home' | 'projects' | 'experience' | 'contact';
+
+// New Types
+export interface Startup {
+    id: number;
+    name: string;
+    role: string;
+    description: string;
+    logo: string;
+    status: 'Active' | 'Acquired' | 'Pivot';
+    year: string;
+    link?: string;
+}
+
+export interface Organization {
+    id: number;
+    name: string;
+    logo: string;
+    role: string;
+    duration: string;
+}
+
+export interface FreelanceProject {
+    id: number;
+    title: string;
+    client: string;
+    outcome: string;
+    serviceType: string;
+    year: string;
+}
+
+export interface Education {
+    id: number;
+    degree: string;
+    institution: string;
+    year: string;
+    description?: string;
+}

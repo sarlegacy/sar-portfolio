@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View } from '../types';
-import { HomeIcon, WebAppIcon, BriefcaseIcon, StrategyIcon, MailIcon } from './icons/Icons';
+import { HomeIcon, WebAppIcon, BriefcaseIcon, MailIcon } from './icons/Icons';
 
 interface MobileNavBarProps {
     visibleSection: View;
@@ -12,7 +12,6 @@ const NAV_ITEMS = [
     { view: 'home' as View, icon: HomeIcon, label: 'Home' },
     { view: 'projects' as View, icon: WebAppIcon, label: 'Work' },
     { view: 'experience' as View, icon: BriefcaseIcon, label: 'Exp' },
-    { view: 'tracking' as View, icon: StrategyIcon, label: 'Track' },
     { view: 'contact' as View, icon: MailIcon, label: 'Me' },
 ] as const;
 

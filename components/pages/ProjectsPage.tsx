@@ -1,30 +1,23 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { projectsData } from '../../constants';
+import { projectsData, freelanceData } from '../../constants';
 import { Project } from '../../types';
-import ProjectCard from '../ProjectCard';
-import { SearchOffIcon } from '../icons/Icons';
+import { SearchOffIcon, SearchIcon } from '../icons/Icons';
 import ProjectCardSkeleton from '../ProjectCardSkeleton';
 import ProjectModal from '../ProjectModal';
-
-const SearchIcon = () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-    </svg>
-);
-
+import TiltCard from '../TiltCard';
+import ProjectCarousel from '../ProjectCarousel';
 
 const ProjectsPage = () => {
     const [loading, setLoading] = useState(true);
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [visibleCount, setVisibleCount] = useState(4); // Increased initial count for larger grids
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1500); // Simulate fetch
+        }, 1500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -36,32 +29,20 @@ const ProjectsPage = () => {
 
     const filteredProjects = useMemo(() => {
         const lowercasedQuery = searchQuery.toLowerCase();
-        
         return projectsData.filter(p => {
             const matchesTags = activeFilters.length === 0 || activeFilters.every(filter => p.tags.includes(filter));
-            
             const matchesSearch = searchQuery.trim() === '' ||
                 p.title.toLowerCase().includes(lowercasedQuery) ||
                 p.description.toLowerCase().includes(lowercasedQuery);
-
             return matchesTags && matchesSearch;
         });
     }, [activeFilters, searchQuery]);
-
-    useEffect(() => {
-        setVisibleCount(4); // Reset on filter/search change
-    }, [activeFilters, searchQuery]);
-
-    const projectsToShow = useMemo(() => {
-        return filteredProjects.slice(0, visibleCount);
-    }, [filteredProjects, visibleCount]);
 
     const handleFilterClick = useCallback((tag: string) => {
         if (tag === 'All') {
             setActiveFilters([]);
             return;
         }
-
         setActiveFilters(prevFilters => {
             if (prevFilters.includes(tag)) {
                 return prevFilters.filter(f => f !== tag);
@@ -71,12 +52,12 @@ const ProjectsPage = () => {
         });
     }, []);
 
-
     return (
         <section id="projects" className="min-h-screen lg:h-full snap-start flex flex-col p-2 section-container">
             <div className="flex-grow flex flex-col lg:overflow-y-auto overflow-visible py-4 pr-2">
                 <h2 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-4 flex-shrink-0 section-title transition-colors duration-500">Projects</h2>
                 
+                {/* Search and Filter Controls */}
                 <div className="mb-6 relative flex-shrink-0 group">
                     <input
                         type="text"
@@ -110,49 +91,59 @@ const ProjectsPage = () => {
                     })}
                 </div>
 
-                <div className="flex-grow lg:overflow-y-auto overflow-visible">
+                {/* Main Project Carousel */}
+                <div className="mb-12">
                      {loading ? (
-                        /* Responsive Grid with Breakpoints */
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
-                            {[...Array(4)].map((_, index) => (
-                                <ProjectCardSkeleton key={index} />
+                        <div className="flex gap-6 overflow-x-hidden pb-8 px-2">
+                            {[...Array(3)].map((_, index) => (
+                                <div key={index} className="shrink-0 w-[85vw] sm:w-[400px]">
+                                    <ProjectCardSkeleton />
+                                </div>
                             ))}
                         </div>
                     ) : filteredProjects.length > 0 ? (
-                        <>
-                             {/* Responsive Grid with Breakpoints: 1 col mobile, 2 cols tablet/desktop, 3 cols ultrawide */}
-                            <div key={`${activeFilters.join('-')}-${searchQuery}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
-                                {projectsToShow.map((project, index) => (
-                                    <ProjectCard 
-                                        key={project.id} 
-                                        project={project} 
-                                        index={index} 
-                                        onClick={setSelectedProject}
-                                    />
-                                ))}
-                            </div>
-
-                             {visibleCount < filteredProjects.length && (
-                                <div className="mt-8 text-center">
-                                    <button
-                                        onClick={() => setVisibleCount(prev => prev + 2)}
-                                        className="bg-gray-200 dark:bg-mono-mid text-gray-700 dark:text-mono-light font-semibold py-3 px-6 rounded-full hover:bg-gray-300 dark:hover:bg-mono-mid/70 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md active:scale-95"
-                                    >
-                                        Load More
-                                    </button>
-                                </div>
-                            )}
-                        </>
+                        <ProjectCarousel 
+                            projects={filteredProjects} 
+                            onProjectClick={setSelectedProject} 
+                        />
                     ) : (
-                         <div className="flex flex-col items-center justify-center h-full text-center py-10 animate-fade-in">
+                         <div className="flex flex-col items-center justify-center h-64 text-center py-10 animate-fade-in">
                             <div className="p-4 bg-gray-100 dark:bg-mono-mid rounded-full mb-4 text-gray-500 dark:text-mono-light">
                                 <SearchOffIcon className="w-10 h-10" />
                             </div>
                             <h4 className="font-bold text-lg text-gray-800 dark:text-mono-white mb-1">No Projects Found</h4>
-                            <p className="text-gray-500 dark:text-mono-light">Try adjusting your search or filters to find what you're looking for.</p>
+                            <p className="text-gray-500 dark:text-mono-light">Try adjusting your search or filters.</p>
                         </div>
                     )}
                 </div>
+
+                {/* Freelance & Services Section */}
+                {!loading && (
+                    <div className="animate-fade-in">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                            <span className="w-1.5 h-6 bg-brand-green rounded-full"></span>
+                            Freelance & Services
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {freelanceData.map((freelance) => (
+                                <TiltCard key={freelance.id}>
+                                    <div className="bg-white dark:bg-mono-mid p-6 rounded-xl border border-gray-200 dark:border-white/5 h-full hover:border-brand-green/30 transition-all hover:shadow-lg flex flex-col">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <span className="text-xs font-bold text-brand-green bg-brand-green/10 px-2 py-1 rounded uppercase">{freelance.serviceType}</span>
+                                            <span className="text-xs font-mono text-gray-400">{freelance.year}</span>
+                                        </div>
+                                        <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-1">{freelance.title}</h4>
+                                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Client: {freelance.client}</p>
+                                        
+                                        <div className="mt-auto pt-4 border-t border-gray-100 dark:border-white/5">
+                                            <p className="text-sm text-gray-600 dark:text-gray-300 italic">"{freelance.outcome}"</p>
+                                        </div>
+                                    </div>
+                                </TiltCard>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
             <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
         </section>

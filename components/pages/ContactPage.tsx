@@ -4,6 +4,9 @@ import { FormStatus } from '../../types';
 import TiltCard from '../TiltCard';
 import { MailIcon, PhoneIcon, SendIcon } from '../icons/Icons';
 import StaggeredList from '../StaggeredList';
+import FormInput from '../FormInput';
+import FormTextarea from '../FormTextarea';
+import { profileData } from '../../constants';
 
 const ContactPage = () => {
     const [status, setStatus] = useState<FormStatus>('idle');
@@ -45,43 +48,34 @@ const ContactPage = () => {
                                   </p>
                                   <form onSubmit={handleSubmit} className="space-y-5">
                                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                          <div className="space-y-2">
-                                              <label htmlFor="name" className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1">Name</label>
-                                              <input 
-                                                type="text" 
-                                                id="name" 
-                                                name="name" 
-                                                className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-3.5 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none transition-all duration-300 hover:border-gray-300 dark:hover:border-white/20" 
-                                                placeholder="John Doe"
-                                                required 
-                                                disabled={status === 'sending'} 
-                                              />
-                                          </div>
-                                          <div className="space-y-2">
-                                              <label htmlFor="email" className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1">Email</label>
-                                              <input 
-                                                type="email" 
-                                                id="email" 
-                                                name="email" 
-                                                className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-3.5 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none transition-all duration-300 hover:border-gray-300 dark:hover:border-white/20" 
-                                                placeholder="john@example.com"
-                                                required 
-                                                disabled={status === 'sending'}
-                                              />
-                                          </div>
-                                      </div>
-                                      <div className="space-y-2">
-                                          <label htmlFor="message" className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1">Message</label>
-                                          <textarea 
-                                            id="message" 
-                                            name="message" 
-                                            rows={5} 
-                                            className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl p-3.5 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-green focus:border-transparent outline-none transition-all duration-300 hover:border-gray-300 dark:hover:border-white/20 resize-none" 
-                                            placeholder="Hello, I'd like to talk about..."
-                                            required 
+                                          <FormInput 
+                                            label="Name"
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            placeholder="John Doe"
+                                            required
                                             disabled={status === 'sending'}
-                                          ></textarea>
+                                          />
+                                          <FormInput 
+                                            label="Email"
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            placeholder="john@example.com"
+                                            required
+                                            disabled={status === 'sending'}
+                                          />
                                       </div>
+                                      <FormTextarea 
+                                        label="Message"
+                                        id="message"
+                                        name="message"
+                                        rows={5}
+                                        placeholder="Hello, I'd like to talk about..."
+                                        required
+                                        disabled={status === 'sending'}
+                                      />
                                       <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                                           <button 
                                               type="submit"
@@ -109,30 +103,49 @@ const ContactPage = () => {
                     <div className="lg:col-span-1 space-y-6">
                         <StaggeredList>
                             <TiltCard>
-                                <a href="mailto:portfolio.sar@gmail.com" className="group block bg-white dark:bg-mono-mid p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                <a href={`mailto:${profileData.email}`} className="group block bg-white dark:bg-mono-mid p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                                     <div className="flex items-center gap-5">
                                         <div className="p-4 bg-brand-green/10 text-brand-green rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-brand-green group-hover:text-mono-black">
                                             <MailIcon className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h4 className="font-display text-lg font-bold text-gray-900 dark:text-white transition-colors">Email Me</h4>
-                                            <p className="text-gray-500 dark:text-gray-400 group-hover:text-brand-green transition-colors font-medium">portfolio.sar@gmail.com</p>
+                                            <p className="text-gray-500 dark:text-gray-400 group-hover:text-brand-green transition-colors font-medium">{profileData.email}</p>
                                         </div>
                                     </div>
                                 </a>
                             </TiltCard>
                             <TiltCard>
-                                <a href="tel:+8801681821004" className="group block bg-white dark:bg-mono-mid p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                <a href={`tel:${profileData.phone}`} className="group block bg-white dark:bg-mono-mid p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                                      <div className="flex items-center gap-5">
                                         <div className="p-4 bg-brand-green/10 text-brand-green rounded-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-brand-green group-hover:text-mono-black">
                                             <PhoneIcon className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h4 className="font-display text-lg font-bold text-gray-900 dark:text-white transition-colors">Call Me</h4>
-                                            <p className="text-gray-500 dark:text-gray-400 group-hover:text-brand-green transition-colors font-medium">+88 01681821004</p>
+                                            <p className="text-gray-500 dark:text-gray-400 group-hover:text-brand-green transition-colors font-medium">{profileData.phone}</p>
                                         </div>
                                     </div>
                                 </a>
+                            </TiltCard>
+
+                            {/* QR Code Card */}
+                            <TiltCard>
+                                <div className="group block bg-white dark:bg-mono-mid p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-brand-green/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-default">
+                                     <div className="flex items-center gap-5">
+                                        <div className="p-2 bg-white rounded-xl border border-gray-100 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                                            <img 
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(profileData.website || 'https://www.saifulrafi.com')}`} 
+                                                alt="Resume QR Code" 
+                                                className="w-20 h-20 object-contain"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-display text-lg font-bold text-gray-900 dark:text-white transition-colors">Scan for Resume</h4>
+                                            <p className="text-gray-500 dark:text-gray-400 group-hover:text-brand-green transition-colors font-medium text-sm mt-1">Quick access to digital resume</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </TiltCard>
                         </StaggeredList>
                     </div>

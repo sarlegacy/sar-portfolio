@@ -10,9 +10,9 @@ const ExperienceItem: React.FC<ExperienceItemProps> = ({ item }) => {
     return (
         <div className="relative group">
             {/* Timeline Node - Perfectly centered on the line */}
-            <div className="absolute -left-[1.65rem] sm:-left-[2.1rem] top-6 w-4 h-4 rounded-full border-[3px] border-white dark:border-mono-dark bg-gray-300 dark:bg-mono-light transition-all duration-500 group-hover:bg-brand-green group-hover:scale-125 shadow-md z-10"></div>
+            <div className="absolute -left-[1.65rem] sm:-left-[2.1rem] top-6 w-4 h-4 rounded-full border-[3px] border-white dark:border-mono-dark bg-gray-300 dark:bg-mono-light transition-all duration-300 ease-out-expo group-hover:bg-brand-green group-hover:scale-125 shadow-md z-10"></div>
             
-            <div className="ml-4 sm:ml-6 bg-white dark:bg-mono-mid p-6 sm:p-8 rounded-2xl border border-gray-100 dark:border-white/5 transition-all duration-500 hover:border-brand-green/30 dark:hover:border-brand-green/30 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-black/30 hover:-translate-y-1 group-hover:bg-gray-50 dark:group-hover:bg-mono-mid/80">
+            <div className="ml-4 sm:ml-6 bg-white dark:bg-mono-mid p-6 sm:p-8 rounded-2xl border border-gray-100 dark:border-white/5 transition-all duration-300 ease-out-expo hover:border-brand-green/30 dark:hover:border-brand-green/30 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-black/30 hover:-translate-y-1 group-hover:bg-gray-50 dark:group-hover:bg-mono-mid/80">
                 <div className="flex justify-between items-start mb-4 flex-col sm:flex-row gap-2">
                     <div className="flex items-center gap-4">
                         {item.logo && (

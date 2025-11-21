@@ -10,10 +10,10 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>('dark');
   
   useEffect(() => {
-     // Set initial theme based on localStorage or system preference
+     // Set initial theme based on localStorage or default to dark
     const savedTheme = localStorage.getItem('theme') as Theme | null;
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    // Default to 'dark' if no preference is saved, ignoring system preference to ensure dark mode default
+    const initialTheme = savedTheme || 'dark';
     setTheme(initialTheme);
 
     if (initialTheme === 'dark') {

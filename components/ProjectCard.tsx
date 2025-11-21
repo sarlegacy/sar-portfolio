@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Project } from '../types';
 import { ExternalLinkIcon, CodeIcon } from './icons/Icons';
@@ -10,6 +9,9 @@ interface ProjectCardProps {
     index: number;
     onClick: (project: Project) => void;
 }
+
+// Define static classes outside component to avoid recreation
+const LINK_CLASSES = "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold tracking-wide text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95";
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) => {
     const cardRef = useRef<HTMLDivElement>(null);
@@ -78,8 +80,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
     const handleMouseEnter = () => setTransform(prev => ({ ...prev, scale: 1.15 }));
     const handleMouseLeave = () => setTransform(prev => ({ ...prev, scale: 1.1 }));
 
-    const linkClasses = "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold tracking-wide text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300";
-
     return (
         <div 
             ref={wrapperRef}
@@ -94,10 +94,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => onClick(project)}
-                className="relative spotlight-card bg-white dark:bg-mono-mid rounded-2xl overflow-hidden flex flex-col group transition-all duration-500 hover:shadow-2xl hover:shadow-black/10 dark:hover:shadow-black/40 hover:-translate-y-2 cursor-pointer border border-gray-100 dark:border-white/5"
+                className="relative spotlight-card bg-white dark:bg-mono-mid rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 ease-out-expo hover:-translate-y-2 hover:scale-[1.02] cursor-pointer border border-gray-100 dark:border-white/5 hover:border-brand-green/50 dark:hover:border-brand-green/50 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3),0_0_25px_rgba(160,219,36,0.25)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.7),0_0_25px_rgba(160,219,36,0.15)] will-change-transform"
             >
                 <div className="aspect-[4/3] md:aspect-video overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                     <img 
                         src={project.image} 
                         alt={project.title} 
@@ -107,8 +107,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
                         }}
                     />
                 </div>
-                <div className="p-5 sm:p-6 flex flex-col flex-grow relative z-10 bg-white dark:bg-mono-mid transition-colors duration-500">
-                    <h4 className="font-display text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500 group-hover:text-brand-green leading-tight">
+                <div className="p-5 sm:p-6 flex flex-col flex-grow relative z-10 bg-white dark:bg-mono-mid transition-colors duration-300 group-hover:bg-gray-50/50 dark:group-hover:bg-mono-mid/80">
+                    <h4 className="font-display text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300 group-hover:text-brand-green leading-tight">
                         {project.title}
                     </h4>
                     <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5 line-clamp-3">
@@ -116,19 +116,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
                     </p>
                     <div className="flex flex-wrap gap-2 mb-6">
                         {project.tags.slice(0, 4).map(tag => (
-                            <span key={tag} className="bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                            <span key={tag} className="bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full group-hover:border-brand-green/20 transition-colors">
                                 {tag}
                             </span>
                         ))}
                     </div>
                     <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
                         {project.liveUrl && (
-                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={linkClasses}>
+                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={LINK_CLASSES}>
                                 <ExternalLinkIcon /> Live
                             </a>
                         )}
                         {project.repoUrl && (
-                            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className={linkClasses}>
+                            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className={LINK_CLASSES}>
                                 <CodeIcon /> Code
                             </a>
                         )}
